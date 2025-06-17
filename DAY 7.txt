@@ -1,0 +1,127 @@
+DAY 7
+STUDENT TABLES
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+public class CreateTables {
+    public static void main(String[] args) {
+        String url = "jdbc:mysql://localhost:3306/your_database_name";  // replace with your DB details
+        String user = "your_username"; 
+        String password = "your_password";
+
+        String createStudentTable = """
+            CREATE TABLE IF NOT EXISTS Student (
+                student_id INT PRIMARY KEY,
+                name VARCHAR(100) NOT NULL,
+                age INT,
+                email VARCHAR(100)
+            );
+        """;
+
+        String createCourseTable = """
+            CREATE TABLE IF NOT EXISTS Course (
+                course_id INT PRIMARY KEY,
+                course_name VARCHAR(100) NOT NULL,
+                credits INT
+            );
+        """;
+
+        try (Connection conn = DriverManager.getConnection(url, user, password);
+             Statement stmt = conn.createStatement()) {
+            stmt.execute(createStudentTable);
+            System.out.println("Student table created.");
+            stmt.execute(createCourseTable);
+            System.out.println("Course table created.");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+RECORD
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+public class InsertRecords {
+    public static void main(String[] args) {// Database connection info (update accordingly)
+        String url = "jdbc:mysql://localhost:3306/your_database_name"; // your DB name
+        String user = "your_username";
+        String password = "your_password";
+
+        try (Connection conn = DriverManager.getConnection(url, user, password);
+             Statement stmt = conn.createStatement()) {
+            String[] studentInserts = {
+                "INSERT INTO Student VALUES (1, 'Alice', 20, 'alice@example.com')",
+                "INSERT INTO Student VALUES (2, 'Bob', 22, 'bob@example.com')",
+                "INSERT INTO Student VALUES (3, 'Charlie', 19, 'charlie@example.com')",
+                "INSERT INTO Student VALUES (4, 'David', 21, 'david@example.com')",
+                "INSERT INTO Student VALUES (5, 'Eve', 23, 'eve@example.com')"
+            };
+
+            for (String sql : studentInserts) {
+                stmt.executeUpdate(sql);
+            }
+            System.out.println("Inserted 5 records into Student table.");
+
+          
+            String[] courseInserts = {
+                "INSERT INTO Course VALUES (101, 'Mathematics', 4)",
+                "INSERT INTO Course VALUES (102, 'Physics', 3)",
+                "INSERT INTO Course VALUES (103, 'Chemistry', 4)",
+                "INSERT INTO Course VALUES (104, 'Biology', 3)",
+                "INSERT INTO Course VALUES (105, 'Computer Science', 5)"
+            };
+
+            for (String sql : courseInserts) {
+                stmt.executeUpdate(sql);
+            }
+            System.out.println("Inserted 5 records into Course table.");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+COURSE FEE
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+public class UpdateCourseFee {
+    public static void main(String[] args) 
+        String url = "jdbc:mysql://localhost:3306/your_database_name"; 
+        String user = "your_username";
+        String password = "your_password";
+
+        
+        int courseIdToUpdate = 105;
+        int newCredits = 6;  // Or new fee amount
+
+        String updateSQL = "UPDATE Course SET credits = ? WHERE course_id = ?";
+
+        try (Connection conn = DriverManager.getConnection(url, user, password);
+             PreparedStatement pstmt = conn.prepareStatement(updateSQL)) {
+
+            pstmt.setInt(1, newCredits);        
+            pstmt.setInt(2, courseIdToUpdate);  
+
+            int rowsAffected = pstmt.executeUpdate();
+
+            if (rowsAffected > 0) {
+                System.out.println("Course fee/credits updated successfully.");
+            } else {
+                System.out.println("No course found with the given course_id.");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}

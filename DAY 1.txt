@@ -1,0 +1,56 @@
+DAY 1
+EVEN NUMBERS
+public class EvenNumbers {
+    public static void main(String[] args) {
+        System.out.println("Even numbers between 1 and 100:");
+        for (int i = 1; i <= 100; i++) {
+            if (i % 2 == 0) {
+                System.out.print(i + " ");
+            }
+        }
+    }
+}
+
+SIMPLE INTEREST CALCULATOR
+import java.util.Scanner;
+
+public class SimpleInterestCalculator {
+    public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
+        System.out.print("Enter principal amount: ");
+        double principal = input.nextDouble();
+
+        System.out.print("Enter rate of interest: ");
+        double rate = input.nextDouble();
+
+        System.out.print("Enter time (in years): ");
+
+LEAP YEAR
+import java.util.Scanner;
+
+public class LeapYearChecker {
+    public static boolean isLeapYear(int year) {
+        if (year % 4 == 0) {
+            if (year % 100 == 0) {
+                return (year % 400 == 0);
+            } else {
+                return true;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
+   System.out.print("Enter a year: ");
+        int year = input.nextInt();
+  if (isLeapYear(year)) {
+            System.out.println(year + " is a Leap Year.");
+        } else {
+            System.out.println(year + " is NOT a Leap Year.");
+        }
+
+        input.close();
+    }
+}
